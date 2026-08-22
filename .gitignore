@@ -1,0 +1,6 @@
+# Abaikan file data lokal
+data_wisata.csv
+
+# Abaikan cache Python
+__pycache__/
+*.pyc
