@@ -156,3 +156,87 @@ def hitung_total(
         " | ".join(keterangan),
         total_setelah_diskon
     )
+
+# TAMBAH DATA
+def tambah_data():
+    print("\n========== TAMBAH DATA ==========")
+    nama = input("Nama : ")
+
+    # INPUT TANGGAL PEMBELIAN
+    while True:
+        tanggal_pembelian = input("Tanggal Pembelian (YYYY-MM-DD): ")
+        try:
+            datetime.strptime(tanggal_pembelian, "%Y-%m-%d")
+            break
+        except ValueError:
+            print("Format salah!")
+
+    # INPUT TANGGAL LAHIR
+    while True:
+        tanggal_lahir = input("Tanggal Lahir (YYYY-MM-DD): ")
+        try:
+            datetime.strptime(tanggal_lahir, "%Y-%m-%d")
+            break
+        except ValueError:
+            print("Format salah!")
+
+    alamat = input("Alamat : ")
+    tiket_dewasa = int(input("Jumlah Tiket Dewasa : "))
+    tiket_anak = int(input("Jumlah Tiket Anak : "))
+
+    # TAMPILKAN WAHANA
+    print("\n========== WAHANA ==========")
+    for kategori, isi in wahana.items():
+        print(f"\n{kategori}")
+        for kode, data in isi.items():
+            print(f"{kode}. {data[0]} - Rp{data[1]}")
+
+    pilihan = input("\nPilih wahana (contoh: 1,3,5): ")
+    pilihan_wahana = list(map(int, pilihan.split(",")))
+
+    # HITUNG TOTAL
+    (
+        daftar_wahana,
+        total_tiket_dewasa,
+        total_tiket_anak,
+        total_wahana,
+        total_keseluruhan,
+        potongan,
+        keterangan,
+        total_setelah_diskon
+    ) = hitung_total(
+        tanggal_pembelian,
+        tanggal_lahir,
+        tiket_dewasa,
+        tiket_anak,
+        pilihan_wahana
+    )
+
+    # DETAIL PEMBAYARAN
+    print("\n========== DETAIL PEMBAYARAN ==========")
+    print(f"Total Tiket Dewasa : Rp{total_tiket_dewasa}")
+    print(f"Total Tiket Anak : Rp{total_tiket_anak}")
+    print(f"Total Biaya Wahana : Rp{total_wahana}")
+    print("--------------------------------------")
+    print(f"Total Keseluruhan : Rp{total_keseluruhan}")
+    print(f"Potongan : Rp{potongan}")
+    print("--------------------------------------")
+    print(f"Keterangan : {keterangan}")
+    print(f"Total Setelah Diskon : Rp{total_setelah_diskon}")
+
+    # DATA
+    data = {
+        "tanggal_pembelian": tanggal_pembelian,
+        "nama": nama,
+        "tanggal_lahir": tanggal_lahir,
+        "alamat": alamat,
+        "tiket_dewasa": tiket_dewasa,
+        "tiket_anak": tiket_anak,
+        "wahana": daftar_wahana,
+        "potongan": potongan,
+        "keterangan": keterangan,
+        "total_bayar": total_setelah_diskon
+    }
+
+    simpan_ke_csv(data)
+    print("\nDATA BERHASIL DITAMBAHKAN!")
