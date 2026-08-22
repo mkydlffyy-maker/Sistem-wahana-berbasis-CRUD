@@ -86,3 +86,73 @@ def update_csv(data_pengunjung):
         writer.writeheader()
         for data in data_pengunjung:
             writer.writerow(data)
+
+# HITUNG TOTAL
+def hitung_total(
+    tanggal_pembelian,
+    tanggal_lahir,
+    tiket_dewasa,
+    tiket_anak,
+    pilihan_wahana
+):
+    total_tiket = tiket_dewasa + tiket_anak
+    tanggal_beli = datetime.strptime(tanggal_pembelian, "%Y-%m-%d")
+    tgl_lahir = datetime.strptime(tanggal_lahir, "%Y-%m-%d")
+
+    # CEK ULANG TAHUN
+    gratis_ultah = (
+        tanggal_beli.month == tgl_lahir.month and
+        tanggal_beli.day == tgl_lahir.day
+    )
+
+    # TOTAL TIKET
+    total_tiket_dewasa = tiket_dewasa * HARGA_DEWASA
+    total_tiket_anak = tiket_anak * HARGA_ANAK
+    total_tiket_masuk_normal = total_tiket_dewasa + total_tiket_anak
+
+    if gratis_ultah:
+        total_tiket_masuk = 0
+    else:
+        total_tiket_masuk = total_tiket_masuk_normal
+
+    # TOTAL WAHANA
+    total_wahana = 0
+    daftar_wahana = []
+
+    for kode in pilihan_wahana:
+        for kategori in wahana.values():
+            if kode in kategori:
+                nama, harga = kategori[kode]
+                total_wahana += harga
+                daftar_wahana.append(nama)
+
+    # TOTAL KESELURUHAN
+    total_keseluruhan = total_tiket_masuk_normal + total_wahana
+
+    # DISKON
+    potongan = 0
+    keterangan = []
+
+    if gratis_ultah:
+        keterangan.append("Gratis tiket masuk karena ulang tahun")
+
+    if total_tiket > 10:
+        potongan = 20000
+        keterangan.append("Potongan Rp20.000 karena beli > 10 tiket")
+
+    if len(keterangan) == 0:
+        keterangan.append("Tidak ada potongan")
+
+    # TOTAL SETELAH DISKON
+    total_setelah_diskon = total_tiket_masuk + total_wahana - potongan
+
+    return (
+        daftar_wahana,
+        total_tiket_dewasa,
+        total_tiket_anak,
+        total_wahana,
+        total_keseluruhan,
+        potongan,
+        " | ".join(keterangan),
+        total_setelah_diskon
+    )
