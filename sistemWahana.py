@@ -240,3 +240,65 @@ def tambah_data():
 
     simpan_ke_csv(data)
     print("\nDATA BERHASIL DITAMBAHKAN!")
+
+
+# TAMPILKAN DATA
+def tampilkan_data():
+    data_pengunjung = baca_csv()
+    print("\n========== DATA ==========")
+    if len(data_pengunjung) == 0:
+        print("Belum ada data")
+        return
+
+    nomor = 1
+    for data in data_pengunjung:
+        print(f"""
+========================================
+No : {nomor}
+
+Nama : {data['Nama']}
+Tanggal Pembelian : {data['Tanggal Pembelian']}
+Tanggal Lahir : {data['Tanggal Lahir']}
+Alamat : {data['Alamat']}
+Tiket Dewasa : {data['Tiket Dewasa']}
+Tiket Anak : {data['Tiket Anak']}
+Wahana : {data['Wahana']}
+Potongan : Rp{data['Potongan']}
+Keterangan : {data['Keterangan']}
+Total Bayar : Rp{data['Total Bayar']}
+========================================
+""")
+        nomor += 1
+
+# UPDATE DATA
+def update_data():
+    data_pengunjung = baca_csv()
+    tampilkan_data()
+    if len(data_pengunjung) == 0:
+        return
+
+    index = int(input("Pilih nomor data: ")) - 1
+    if index < 0 or index >= len(data_pengunjung):
+        print("Data tidak ditemukan")
+        return
+
+    nama_baru = input("Nama baru : ")
+    data_pengunjung[index]["Nama"] = nama_baru
+    update_csv(data_pengunjung)
+    print("DATA BERHASIL DIUPDATE!")
+
+# HAPUS DATA
+def hapus_data():
+    data_pengunjung = baca_csv()
+    tampilkan_data()
+    if len(data_pengunjung) == 0:
+        return
+
+    index = int(input("Pilih nomor data: ")) - 1
+    if index < 0 or index >= len(data_pengunjung):
+        print("Data tidak ditemukan")
+        return
+
+    data_pengunjung.pop(index)
+    update_csv(data_pengunjung)
+    print("DATA BERHASIL DIHAPUS!")
