@@ -302,3 +302,39 @@ def hapus_data():
     data_pengunjung.pop(index)
     update_csv(data_pengunjung)
     print("DATA BERHASIL DIHAPUS!")
+
+
+    # MENU UTAMA
+while True:
+    print("""
+========================================
+        SISTEM TEMPAT WISATA
+========================================
+1. Tambah Data
+2. Tampilkan Data
+3. Update Data
+4. Hapus Data
+5. Keluar
+========================================
+""")
+    menu = input("Pilih menu : ")
+
+    if menu == "1":
+        tambah_data()
+    elif menu == "2":
+        tampilkan_data()
+    elif menu == "3":
+        update_data()
+    elif menu == "4":
+        hapus_data()
+    elif menu == "5":
+        konfirmasi = input("Yakin ingin keluar (y/n)? ").lower()
+        if konfirmasi == "y":
+            print("TERIMAKASIH SUDAH BERKUNJUNG!")
+            break
+        elif konfirmasi == "n":
+            print("Kembali ke menu...")
+        else:
+            print("Input tidak valid")
+    else:
+        print("Menu tidak tersedia")
